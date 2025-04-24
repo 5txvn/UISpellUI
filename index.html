@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spelling Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .clay-button {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+                       -8px -8px 16px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .clay-button:hover {
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1),
+                       -4px -4px 8px rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen relative overflow-hidden">
+    <!-- Navigation Bar -->
+    <nav class="bg-white/30 backdrop-blur-sm border-b-2 border-white/50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-center gap-2">
+                        <i class="fa fa-pencil-square-o text-2xl text-black pt-0.5"></i>
+                        <span class="text-xl font-bold text-black">UISpell</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-clock-o text-red-500"></i>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="absolute w-96 h-96 bg-green-200/20 rounded-full -top-48 -right-48"></div>
+    <div class="absolute w-96 h-96 bg-red-200/20 rounded-full -bottom-48 -left-48"></div>
+    
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Progress Bar -->
+        <div class="container mx-auto px-4 mb-8 flex items-center gap-4">
+            <div class="h-3 bg-white/30 rounded-full flex-1 border border-black/20">
+                <div id="progressBar" class="h-full bg-green-400/80 rounded-full transition-all duration-500 w-[1%]"></div>
+            </div>
+            <div class="w-20 text-right font-mono text-lg" id="progressPercent">1%</div>
+        </div>
+
+        <!-- Scoreboard -->
+        <div class="stats shadow-lg bg-white/30 backdrop-blur-sm border-2 border-white/50 rounded-2xl mb-8 mx-auto max-w-md md:max-w-full flex flex-col md:flex-row justify-center">
+            <div class="stat">
+                <div class="stat-title text-green-600 font-semibold">Correct</div>
+                <div class="stat-value">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title text-red-600 font-semibold">Incorrect</div>
+                <div class="stat-value">0</div>
+            </div>
+        </div>
+
+        <!-- Main Input Area -->
+        <div class="bg-white/30 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-white/50">
+            <div class="flex items-center gap-4 mb-6">
+                <!-- Sound Button -->
+                <button class="clay-button bg-green-400/80 w-16 h-16 flex items-center justify-center rounded-2xl hover:scale-110">
+                    <i class="fa fa-volume-up text-2xl text-green-900"></i>
+                </button>
+
+                <!-- Input Field -->
+                <input type="text" id="spellingInput"
+                    class="input input-lg input-bordered w-full text-2xl font-semibold placeholder-opacity-50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="Type the word here...">
+
+                <!-- Accent Button -->
+                <button class="clay-button bg-red-200/80 w-16 h-16 flex items-center justify-center rounded-2xl" id="accentBtn">
+                    <i class="fa fa-language text-2xl text-red-800"></i>
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-center gap-6 mt-8">
+                <button class="clay-button bg-green-400/80 px-8 py-4 text-xl font-bold text-green-900 rounded-full hover:bg-green-500/90">
+                    <i class="fa fa-check-circle mr-2"></i>Check
+                </button>
+                <button class="clay-button bg-red-600/90 px-8 py-4 text-xl font-bold text-white rounded-full hover:bg-red-700">
+                    <i class="fa fa-forward mr-2"></i>Skip
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="bg-white/30 backdrop-blur-sm p-6 rounded-2xl shadow-lg border-2 border-white/50 mt-8">
+            <h3 class="text-xl font-bold mb-4">Settings</h3>
+            <div class="space-y-6">
+                <div class="form-control">
+                    <label class="label justify-start gap-4">
+                        <span class="label-text font-semibold text-base">Success Sound:</span>
+                        <input type="checkbox" class="toggle toggle-success">
+                    </label>
+                    <input type="range" min="0" max="100" value="80" class="range range-xs range-success mt-2">
+                </div>
+                <div class="form-control">
+                    <label class="label justify-start gap-4">
+                        <span class="label-text font-semibold text-base">Incorrect Sound:</span>
+                        <input type="checkbox" class="toggle toggle-error">
+                    </label>
+                    <input type="range" min="0" max="100" value="80" class="range range-xs range-error mt-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accent Popup -->
+    <div class="modal" id="accentModal">
+        <div class="modal-box bg-white/30 backdrop-blur-sm border-2 border-white/50">
+            <h3 class="font-bold text-lg mb-4">Add Accent Mark</h3>
+            <div class="grid grid-cols-4 gap-3">
+                <button class="clay-button bg-green-100/50 w-12 h-12 text-xl hover:bg-green-200/60">á</button>
+                <button class="clay-button bg-green-100/50 w-12 h-12 text-xl hover:bg-green-200/60">é</button>
+                <button class="clay-button bg-green-100/50 w-12 h-12 text-xl hover:bg-green-200/60">í</button>
+                <button class="clay-button bg-green-100/50 w-12 h-12 text-xl hover:bg-green-200/60">ó</button>
+                <button class="clay-button bg-green-100/50 w-12 h-12 text-xl hover:bg-green-200/60">ú</button>
+                <button class="clay-button bg-red-100/50 w-12 h-12 text-xl hover:bg-red-200/60">ñ</button>
+                <button class="clay-button bg-red-100/50 w-12 h-12 text-xl hover:bg-red-200/60">ü</button>
+                <button class="clay-button bg-red-100/50 w-12 h-12 text-xl hover:bg-red-200/60">¿</button>
+            </div>
+            <div class="modal-action">
+                <button class="btn" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+$(document).ready(function() {
+    // Handle accent button clicks
+    $('#accentModal .clay-button').on('click', function() {
+        const char = $(this).text();
+        $('#spellingInput').val($('#spellingInput').val() + char);
+        $('#accentModal').removeClass('modal-open');
+    });
+
+    // Toggle modal visibility
+    $('#accentBtn').on('click', () => $('#accentModal').addClass('modal-open'));
+    $('#closeModal').on('click', () => $('#accentModal').removeClass('modal-open'));
+
+    // Dark mode toggle
+    $('#darkModeToggle').on('change', function() {
+        $('body').toggleClass('bg-gray-900 text-white');
+        $('.modal-box').toggleClass('bg-gray-800 text-white');
+    });
+
+    // Progress animation
+    let progress = 1;
+    window.incrementProgress = function(percent) {
+        const target = Math.min(progress + percent, 100);
+        const increment = () => {
+            if (progress < target) {
+                progress++;
+                $('#progressBar').css('width', `${progress}%`);
+                $('#progressPercent').text(`${progress}%`);
+                setTimeout(increment, 20);
+            }
+        }
+        increment();
+    }
+
+    // Initialize timer
+    let seconds = 0;
+    setInterval(() => {
+        seconds++;
+        const mins = Math.floor(seconds/60).toString().padStart(2,'0');
+        const secs = (seconds%60).toString().padStart(2,'0');
+        $('#timer').text(`${mins}:${secs}`);
+    }, 1000);
+});
+</script>
+</html>

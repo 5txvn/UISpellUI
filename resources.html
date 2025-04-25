@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UISpell - Learning Resources</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .neumorphic-card {
+            background: white;
+            box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.05),
+                       inset 3px 3px 5px rgba(255, 255, 255, 0.8),
+                       4px 4px 8px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen overflow-hidden">
+    <!-- Navigation -->
+    <nav class="bg-white/30 backdrop-blur-sm border-b-2 border-black/50 border-white/50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl font-bold text-black">UISpell</span>
+                </div>
+                <a href="index.html" class="neumorphic-card px-6 py-2 rounded-full hover:scale-105 transition-transform">
+                    Practice Now <i class="fa fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-12 text-center text-black">
+                Learning Resources
+            </h1>
+            
+            <!-- Vocabulary Section -->
+            <div class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-green-600">
+                    <i class="fa fa-book"></i> Vocabulary Builders
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="neumorphic-card p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-green-600">
+                            <i class="fa fa-line-chart"></i> SAT Power Words
+                        </h3>
+                        <p class="text-gray-600">500+ essential vocabulary words with definitions</p>
+                        <a href="#sat-words" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            View Knowt <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Repeat similar card structure for other sections -->
+                </div>
+            </div>
+
+            <!-- Competition Lists -->
+            <div class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-red-600">
+                    <i class="fa fa-pencil"></i> Competition Lists
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="neumorphic-card p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-red-600">
+                            <i class="fa fa-trophy"></i> UIL Master List
+                        </h3>
+                        <p class="text-gray-600">2024 competition words with audio guides</p>
+                        <a href="#uil-list" class="mt-4 inline-block text-red-600 hover:text-red-700">
+                            Study Now <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Repeat similar card structure -->
+                </div>
+            </div>
+
+            <!-- Grammar Guides -->
+            <div class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-yellow-600">
+                    <i class="fa fa-language"></i> Grammar Essentials
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="neumorphic-card p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-yellow-600">
+                            <i class="fa fa-question-circle"></i> Common Errors
+                        </h3>
+                        <p class="text-gray-600">Their/there/they're, affect/effect</p>
+                        <a href="#errors" class="mt-4 inline-block text-yellow-600 hover:text-yellow-700">
+                            Learn Rules <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Repeat similar card structure -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-white/50 mt-16">
+        <div class="container mx-auto px-4 py-8 text-center">
+            <p class="text-gray-600 mb-4">Open source spelling education platform</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-black"><i class="fa fa-github"></i> GitHub</a>
+                <a href="#" class="text-gray-600 hover:text-black"><i class="fa fa-envelope"></i> Contact</a>
+                <a href="#" class="text-gray-600 hover:text-black"><i class="fa fa-handshake-o"></i> Contribute</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

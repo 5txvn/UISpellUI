@@ -1,0 +1,714 @@
+{
+    "abate": {
+      "synonyms": [
+        "subside",
+        "decrease",
+        "ebb",
+        "fade",
+        "lessen",
+        "diminish",
+        "cease",
+        "desist",
+        "void"
+      ],
+      "antonyms": [
+        "intensify",
+        "expand",
+        "increase"
+      ]
+    },
+    "abhorrence": {
+      "synonyms": [
+        "revulsion",
+        "disgust"
+      ],
+      "antonyms": ""
+    },
+    "allude": {
+      "synonyms": [
+        "refer",
+        "suggest"
+      ],
+      "antonyms": ""
+    },
+    "anathematize": {
+      "synonyms": [
+        "imprecate",
+        "execrate",
+        "denounce",
+        "censure"
+      ],
+      "antonyms": ""
+    },
+    "apprehensible": {
+      "synonyms": [
+        "comprehensible"
+      ],
+      "antonyms": [
+        "incomprehensible"
+      ]
+    },
+    "ascetic": {
+      "synonyms": [
+        "abstainer",
+        "recluse",
+        "hermit",
+        "severe",
+        "stern",
+        "austere",
+        "strict",
+        "abstemious",
+        "rigorous"
+      ],
+      "antonyms": [
+        "hedonist",
+        "voluptuary",
+        "worldly",
+        "extravagant"
+      ]
+    },
+    "au courant": {
+      "synonyms": [
+        "current",
+        "enlightened",
+        "well-informed",
+        "in the know"
+      ],
+      "antonyms": [
+        "unenlightened",
+        "uninformed"
+      ]
+    },
+    "besotted": {
+      "synonyms": [
+        "intoxicated",
+        "inebriated",
+        "befuddled"
+      ],
+      "antonyms": ""
+    },
+    "canvasser": {
+      "synonyms": [
+        "investigator",
+        "analyzer",
+        "campaigner",
+        "pollster"
+      ],
+      "antonyms": ""
+    },
+    "carafe": {
+      "synonyms": [
+        "decanter",
+        "cruet"
+      ],
+      "antonyms": ""
+    },
+    "coadjutant": {
+      "synonyms": [
+        "assistant",
+        "aide",
+        "coadjutor",
+        "helper"
+      ],
+      "antonyms": ""
+    },
+    "coeval": {
+      "synonyms": [
+        "contemporary",
+        "coetaneous",
+        "concurrent"
+      ],
+      "antonyms": ""
+    },
+    "condonation": {
+      "synonyms": [
+        "remission",
+        "excusing",
+        "disregard"
+      ],
+      "antonyms": ""
+    },
+    "congeries": {
+      "synonyms": [
+        "composite",
+        "agglomeration",
+        "assemblage"
+      ],
+      "antonyms": ""
+    },
+    "connotation": {
+      "synonyms": [
+        "suggestion",
+        "implication",
+        "reference",
+        "nuance",
+        "significance",
+        "intimation"
+      ],
+      "antonyms": ""
+    },
+    "consuetude": {
+      "synonyms": [
+        "habit",
+        "practice",
+        "manner"
+      ],
+      "antonyms": ""
+    },
+    "cosmopolite": {
+      "synonyms": [
+        "world traveler"
+      ],
+      "antonyms": ""
+    },
+    "credulous": {
+      "synonyms": [
+        "trusting",
+        "unquestioning",
+        "naive"
+      ],
+      "antonyms": [
+        "incredulous",
+        "wary",
+        "cautious"
+      ]
+    },
+    "definitive": {
+      "synonyms": [
+        "decisive",
+        "conclusive",
+        "crucial",
+        "determinative"
+      ],
+      "antonyms": [
+        "indefinite",
+        "inconclusive",
+        "incomplete"
+      ]
+    },
+    "degenerate": {
+      "synonyms": [
+        "dissolute",
+        "degraded",
+        "debased",
+        "ignoble",
+        "derelict",
+        "scoundrel",
+        "profligate",
+        "deteriorate",
+        "decline",
+        "worsen"
+      ],
+      "antonyms": [
+        "moral",
+        "decent",
+        "wholesome",
+        "progress",
+        "improve"
+      ]
+    },
+    "demoniac": {
+      "synonyms": [
+        "accursed",
+        "bewitched",
+        "maniacal",
+        "devilish",
+        "diabolical",
+        "satanic"
+      ],
+      "antonyms": [
+        "angelic",
+        "virtuous",
+        "saintly"
+      ]
+    },
+    "desideratum": {
+      "synonyms": [
+        "hope",
+        "dream",
+        "goal",
+        "ambition",
+        "objective"
+      ],
+      "antonyms": ""
+    },
+    "elan": {
+      "synonyms": [
+        "dash",
+        "zest",
+        "ardor",
+        "panache",
+        "verve",
+        "swagger"
+      ],
+      "antonyms": ""
+    },
+    "embarrassment": {
+      "synonyms": [
+        "humiliation",
+        "shame",
+        "disconcertment",
+        "dilemma",
+        "quandary",
+        "predicament ; excess",
+        "superfluity"
+      ],
+      "antonyms": ""
+    },
+    "epigrammatic": {
+      "synonyms": [
+        "pithy",
+        "terse",
+        "succinct",
+        "concise",
+        "aphoristic",
+        "proverbial",
+        "axiomatic"
+      ],
+      "antonyms": ""
+    },
+    "excrescence": {
+      "synonyms": [
+        "growth",
+        "protuberance",
+        "tumor"
+      ],
+      "antonyms": ""
+    },
+    "expunge": {
+      "synonyms": [
+        "erase",
+        "delete",
+        "eradicate"
+      ],
+      "antonyms": ""
+    },
+    "fervency": {
+      "synonyms": [
+        "ardor",
+        "gusto",
+        "intensity",
+        "zeal"
+      ],
+      "antonyms": ""
+    },
+    "frenzied": {
+      "synonyms": [
+        "wild",
+        "hysterical",
+        "enraged",
+        "provoked",
+        "incited"
+      ],
+      "antonyms": ""
+    },
+    "hectored": {
+      "synonyms": [
+        "bullied",
+        "badgered",
+        "harassed"
+      ],
+      "antonyms": ""
+    },
+    "hypercritical": {
+      "synonyms": [
+        "critical",
+        "captious",
+        "censorious",
+        "faultfinding"
+      ],
+      "antonyms": ""
+    },
+    "illusory": {
+      "synonyms": [
+        "misleading",
+        "false",
+        "mistaken"
+      ],
+      "antonyms": [
+        "factual",
+        "authentic"
+      ]
+    },
+    "impious": {
+      "synonyms": [
+        "irreverent",
+        "sacrilegious",
+        "disrespectful"
+      ],
+      "antonyms": [
+        "reverent",
+        "pious",
+        "respectful"
+      ]
+    },
+    "indelible": {
+      "synonyms": [
+        "ineradicable",
+        "enduring",
+        "memorable"
+      ],
+      "antonyms": [
+        "eradicable",
+        "short-lived"
+      ]
+    },
+    "infamy": {
+      "synonyms": [
+        "disgrace",
+        "dishonor",
+        "shame",
+        "ignominy",
+        "odium",
+        "obloquy",
+        "opprobrium",
+        "disrepute",
+        "discredit"
+      ],
+      "antonyms": [
+        "honor",
+        "virtue",
+        "nobility",
+        "integrity"
+      ]
+    },
+    "inglorious": {
+      "synonyms": [
+        "shameful",
+        "dishonorable"
+      ],
+      "antonyms": ""
+    },
+    "insouciance": {
+      "synonyms": [
+        "indifference",
+        "nonchalance"
+      ],
+      "antonyms": ""
+    },
+    "invariable": {
+      "synonyms": [
+        "unchanging",
+        "unchangeable",
+        "unalterable"
+      ],
+      "antonyms": [
+        "variable",
+        "changeable",
+        "alterable"
+      ]
+    },
+    "iterate": {
+      "synonyms": [
+        "repeat",
+        "reiterate",
+        "restate"
+      ],
+      "antonyms": ""
+    },
+    "larcenous": {
+      "synonyms": [
+        "dishonest",
+        "fraudulent"
+      ],
+      "antonyms": [
+        "honest",
+        "upright"
+      ]
+    },
+    "louche": {
+      "synonyms": [
+        "perverse"
+      ],
+      "antonyms": ""
+    },
+    "malediction": {
+      "synonyms": [
+        "execration",
+        "imprecation",
+        "defamation",
+        "calumny",
+        "aspersion"
+      ],
+      "antonyms": ""
+    },
+    "malingerer": {
+      "synonyms": [
+        "shirker",
+        "idler",
+        "loafer"
+      ],
+      "antonyms": ""
+    },
+    "malodorous": {
+      "synonyms": [
+        "smelly",
+        "reeking",
+        "rancid",
+        "noisome"
+      ],
+      "antonyms": ""
+    },
+    "maraud": {
+      "synonyms": [
+        "despoil",
+        "ravage",
+        "ransack"
+      ],
+      "antonyms": ""
+    },
+    "mediocrity": {
+      "synonyms": [
+        "ordinariness",
+        "commonness",
+        "upstart",
+        "commoner"
+      ],
+      "antonyms": [
+        "impressiveness",
+        "superiority"
+      ]
+    },
+    "meliorate": {
+      "synonyms": [
+        "upgrade",
+        "improve",
+        "advance"
+      ],
+      "antonyms": ""
+    },
+    "necessitate": {
+      "synonyms": [
+        "demand",
+        "impel"
+      ],
+      "antonyms": ""
+    },
+    "paltriness": {
+      "synonyms": [
+        "pettiness",
+        "triviality",
+        "shallowness",
+        "meagerness",
+        "contemptibility",
+        "despicableness",
+        "reprehensibleness"
+      ],
+      "antonyms": ""
+    },
+    "parable": {
+      "synonyms": [
+        "allegory",
+        "fable",
+        "legend"
+      ],
+      "antonyms": ""
+    },
+    "periapt": {
+      "synonyms": [
+        "talisman",
+        "good luck charm"
+      ],
+      "antonyms": ""
+    },
+    "peripheral": {
+      "synonyms": [
+        "outermost",
+        "external",
+        "marginal",
+        "unessential",
+        "incidental"
+      ],
+      "antonyms": ""
+    },
+    "piquant": {
+      "synonyms": [
+        "spicy",
+        "tangy",
+        "zesty",
+        "intriguing",
+        "fascinating"
+      ],
+      "antonyms": [
+        "insipid",
+        "tasteless"
+      ]
+    },
+    "pivotal": {
+      "synonyms": [
+        "important",
+        "critical",
+        "vital"
+      ],
+      "antonyms": ""
+    },
+    "plethoric": {
+      "synonyms": [
+        "exorbitant",
+        "excessive",
+        "extravagant"
+      ],
+      "antonyms": ""
+    },
+    "polyglot": {
+      "synonyms": [
+        "multilingual",
+        "bilingual",
+        "linguist"
+      ],
+      "antonyms": ""
+    },
+    "posit": {
+      "synonyms": [
+        "presume",
+        "presuppose",
+        "postulate",
+        "assume"
+      ],
+      "antonyms": ""
+    },
+    "prerogative": {
+      "synonyms": [
+        "right",
+        "privilege",
+        "perquisite",
+        "birthright"
+      ],
+      "antonyms": ""
+    },
+    "puissant": {
+      "synonyms": [
+        "powerful"
+      ],
+      "antonyms": ""
+    },
+    "quixotical": {
+      "synonyms": [
+        "romantic",
+        "impractical",
+        "unrealistic",
+        "rash",
+        "foolhardy"
+      ],
+      "antonyms": [
+        "realistic",
+        "practical"
+      ]
+    },
+    "recalcitrant": {
+      "synonyms": [
+        "unruly",
+        "obstinate",
+        "rebellious"
+      ],
+      "antonyms": ""
+    },
+    "requite": {
+      "synonyms": [
+        "reciprocate",
+        "return",
+        "retaliate",
+        "pay back"
+      ],
+      "antonyms": ""
+    },
+    "resonance": {
+      "synonyms": [
+        "sonority",
+        "fullness"
+      ],
+      "antonyms": ""
+    },
+    "retention": {
+      "synonyms": [
+        "holding",
+        "keeping",
+        "possession",
+        "recollection",
+        "retentiveness",
+        "recall"
+      ],
+      "antonyms": ""
+    },
+    "revocation": {
+      "synonyms": [
+        "repeal",
+        "invalidation",
+        "suspension"
+      ],
+      "antonyms": ""
+    },
+    "scrupulously": {
+      "synonyms": [
+        "meticulously",
+        "carefully",
+        "painstakingly",
+        "fastidiously",
+        "punctiliously"
+      ],
+      "antonyms": ""
+    },
+    "slovenly": {
+      "synonyms": [
+        "sloppy",
+        "unkempt",
+        "slipshod"
+      ],
+      "antonyms": [
+        "tidy",
+        "neat",
+        "careful"
+      ]
+    },
+    "spasmodic": {
+      "synonyms": [
+        "twitchy",
+        "jerky",
+        "sporadic",
+        "irregular",
+        "emotional",
+        "impulsive"
+      ],
+      "antonyms": ""
+    },
+    "squalor": {
+      "synonyms": [
+        "wretchedness",
+        "poverty",
+        "filth"
+      ],
+      "antonyms": [
+        "luxury",
+        "comfort"
+      ]
+    },
+    "supervene": {
+      "synonyms": [
+        "follow",
+        "succeed",
+        "ensue",
+        "result"
+      ],
+      "antonyms": ""
+    },
+    "transmute": {
+      "synonyms": [
+        "convert",
+        "metamorphose",
+        "transfigure",
+        "transform",
+        "transmogrify"
+      ],
+      "antonyms": ""
+    },
+    "volatility": {
+      "synonyms": [
+        "evaporability",
+        "variability",
+        "fickleness",
+        "giddiness",
+        "explosiveness"
+      ],
+      "antonyms": ""
+    }
+}

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - UISpell</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .clay-surface {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+                       -8px -8px 16px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            transition: background-color 2s ease;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Smooth dark mode transition */
+        body {
+            transition: background-color 2s ease, color 2s ease;
+        }
+
+        body.dark-mode {
+            background: #1a202c;
+            color: #ffffff;
+        }
+
+        body.dark-mode .text-gray-700 {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .text-gray-800 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .gradient-title {
+            background: linear-gradient(to right, #ffffff, #a0aec0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        body:not(.dark-mode) .gradient-title {
+            background: linear-gradient(to right, #06d6a0, #ef476f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        body.dark-mode nav {
+            background: rgba(26, 32, 44, 0.95);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .clay-surface {
+            background: rgba(26, 32, 44, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
+                       -8px -8px 16px rgba(255, 255, 255, 0.05);
+        }
+
+        .animate-gradient {
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        .profile-card {
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-item {
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle i {
+            font-size: 20px;
+            color: #ffd166;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle.checked {
+            background: #4a5568;
+        }
+
+        .theme-toggle.checked i {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen overflow-y-auto">
+    <!-- Navigation -->
+    <nav class="bg-gray-100/95 backdrop-blur-md border-b border-gray-200 shadow-sm rounded-b-2xl sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <a href="landing.html" class="text-xl font-bold text-gray-800 hover:text-gray-600 transition-colors">UISpell</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="theme-toggle" id="themeToggle">
+                        <i class="fa fa-sun-o"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-4 md:py-8 max-w-5xl">
+        <!-- Mobile Title -->
+        <div class="md:hidden text-center mb-6 mt-6">
+            <h1 class="text-4xl font-bold gradient-title animate-gradient">
+                About
+            </h1>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 md:gap-8">
+            <!-- Left Column - Image and Quick Info (Hidden on Mobile) -->
+            <div class="hidden md:block md:col-span-1 space-y-4 md:space-y-6">
+                <div class="clay-surface rounded-2xl p-2 md:p-4">
+                    <img src="assets/headshot.jpg" alt="Steven Livingston" class="w-full h-auto rounded-xl shadow-lg">
+                </div>
+                <div class="clay-surface rounded-2xl p-4 md:p-6">
+                    <div class="space-y-3 md:space-y-4">
+                        <div class="info-item">
+                            <h3 class="text-base md:text-lg font-bold text-[#06d6a0]">Name</h3>
+                            <p class="text-sm md:text-base text-gray-700">Steven Livingston</p>
+                        </div>
+                        <div class="info-item">
+                            <h3 class="text-base md:text-lg font-bold text-[#ef476f]">Role</h3>
+                            <p class="text-sm md:text-base text-gray-700">Student at the School of Science and Engineering</p>
+                        </div>
+                        <div class="info-item">
+                            <h3 class="text-base md:text-lg font-bold text-[#ffd166]">Location</h3>
+                            <p class="text-sm md:text-base text-gray-700">Dallas, TX</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Content -->
+            <div class="md:col-span-2 space-y-4 md:space-y-6">
+                <!-- Desktop Title -->
+                <div class="hidden md:block clay-surface rounded-2xl p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-[#06d6a0]">About Me</h2>
+                    <p class="text-sm md:text-base text-gray-700">Hey! My name is Steven Livingston. I'm a student at the School of Science and Engineering in Dallas, TX. I'm the developer behind UISpell</p>
+                </div>
+
+                <!-- Mobile Content -->
+                <div class="md:hidden clay-surface rounded-2xl p-4">
+                    <h2 class="text-xl font-bold mb-3 text-[#06d6a0]">About Me</h2>
+                    <p class="text-sm text-gray-700">Hey! My name is Steven Livingston. I'm a student at the School of Science and Engineering in Dallas, TX. I'm the developer behind UISpell</p>
+                </div>
+
+                <div class="clay-surface rounded-2xl p-4 md:p-6">
+                    <h3 class="text-lg md:text-xl font-bold text-[#ef476f] mb-2 md:mb-3">My Journey</h3>
+                    <p class="text-sm md:text-base text-gray-700">[Share a bit about how you got into programming and education, and what led you to create UISpell]</p>
+                </div>
+
+                <div class="clay-surface rounded-2xl p-4 md:p-6">
+                    <h3 class="text-lg md:text-xl font-bold text-[#ffd166] mb-2 md:mb-3">What I'm Working On</h3>
+                    <p class="text-sm md:text-base text-gray-700">[Talk about your current focus and future plans for UISpell]</p>
+                </div>
+                <!--
+                <div class="clay-surface rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-[#06d6a0] mb-3">Fun Facts</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>I love music a lot and some of my favorite artists </li>
+                        <li>[Another interesting tidbit]</li>
+                        <li>[Something unique about your approach]</li>
+                    </ul>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder" class="pl-4"></div>
+
+    <script>
+        // Load footer component
+        fetch('components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // Initialize theme based on localStorage or system preference
+        const darkMode = localStorage.getItem('darkMode');
+        if (darkMode === 'true' || (!darkMode && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-mode');
+            themeToggle.classList.add('checked');
+            themeToggle.querySelector('i').className = 'fa fa-moon-o';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            themeToggle.classList.toggle('checked');
+            themeToggle.querySelector('i').className = isDark ? 'fa fa-moon-o' : 'fa fa-sun-o';
+            localStorage.setItem('darkMode', isDark);
+        });
+
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', (e) => {
+            if (!localStorage.getItem('darkMode')) {
+                const isDark = e.matches;
+                document.body.classList.toggle('dark-mode', isDark);
+                themeToggle.classList.toggle('checked', isDark);
+                themeToggle.querySelector('i').className = isDark ? 'fa fa-moon-o' : 'fa fa-sun-o';
+            }
+        });
+    </script>
+</body>
+</html> 

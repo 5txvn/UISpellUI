@@ -20,19 +20,174 @@
                        -4px -4px 8px rgba(255, 255, 255, 0.8);
             transform: scale(1.05);
         }
+        /* Scrollbar styling */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom toggle styles */
+        .peer:checked ~ div {
+            background-color: #fff;
+        }
+
+        .peer:checked ~ div i.fa-sun-o {
+            color: orange;
+        }
+
+        .peer:checked ~ div i.fa-moon-o {
+            color: #fff;
+        }
+
+         .peer:checked ~ div:after {
+            background-color: #fff;
+        }
+
+        body.dark-mode .toggle {
+            background-color: white;
+        }
+
+        body.dark-mode .label-text {
+            color: white;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: #1a202c;
+            color: #fff;
+        }
+
+        .label-text {
+            color: black;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .toggle {
+            background-color: lightgray;
+        }
+
+        body.dark-mode .toggle {
+            background-color: #2d3748;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            background-color: lightgray;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            background-color: lightgray;
+        }
+
+        body.dark-mode .bg-white\/30 {
+            background: rgba(26, 32, 44, 0.3);
+        }
+
+        body.dark-mode .text-black {
+            color: #fff;
+        }
+
+        body.dark-mode .h-3.bg-white\/30.rounded-full.flex-1.border.border-black\/20 {
+            background-color: white;
+        }
+
+        body.dark-mode .border {
+            border: none;
+        }
+
+        body.dark-mode .text-xl.font-bold.text-black {
+            color: white;
+        }
+
+        body.dark-mode .fa.fa-pencil-square-o.text-2xl.text-black.pt-0\.5 {
+            color: white;
+        }
+
+        body.dark-mode .clay-button {
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+                       -8px -8px 16px rgba(255, 255, 255, 0.0);
+        }
+
+        #progressBar {
+            background-color: mediumseagreen;
+        }
+
+        .bg-green-400\/80 {
+            background-color: mediumseagreen;
+            opacity: 1;
+            color: white;
+        }
+
+        .clay-button.bg-green-400\/80 {
+            background-color: mediumseagreen;
+        }
+
+        .bg-red-600\/90 {
+            background-color: #F44336;
+            opacity: 1;
+            color: white;
+        }
+
+        .bg-green-400\/80 {
+            background-color: #84cc16;
+            opacity: 1;
+            color: white;
+        }
+
+        .fa.fa-volume-up.text-xl.sm\:text-2xl.text-green-900 {
+            color: white;
+        }
+
+        body.dark-mode .border-white\/50 {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.dark-mode .shadow-lg {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body.dark-mode .input-bordered {
+            border-color: #4a5568;
+            background-color: #2d3748;
+            color: #fff;
+        }
+
+        body.dark-mode .placeholder-gray-500::placeholder {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .stat-value {
+            color: #fff;
+        }
+
+        body.dark-mode .stat-title {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .modal-box {
+            background-color: #2d3748;
+            color: #fff;
+        }
+
+        /* Smooth transition */
+        body, .bg-white\/30, .text-black, .border-white\/50, .shadow-lg, .input-bordered, .stat-value, .stat-title, .modal-box {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen relative overflow-hidden">
+<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen relative overflow-y-auto transition-colors duration-500">
     <!-- Navigation Bar -->
     <nav class="bg-white/30 backdrop-blur-sm border-b-2 border-white/50">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-2">
-                    <div class="flex items-center justify-center gap-2">
-                        <i class="fa fa-pencil-square-o text-2xl text-black pt-0.5"></i>
-                        <span class="text-xl font-bold text-black">UISpell</span>
-                    </div>
-                </div>
+    <div class="flex items-center gap-2">
+        <div class="flex items-center justify-center gap-2">
+            <span class="text-xl font-bold text-black">UISpell</span>
+        </div>
+    </div>
                 <div class="flex items-center gap-2">
                     <i class="fa fa-clock-o text-red-500"></i>
                     <span id="timer">00:00</span>
@@ -40,9 +195,6 @@
             </div>
         </div>
     </nav>
-
-    <div class="absolute w-96 h-96 bg-green-200/20 rounded-full -top-48 -right-48"></div>
-    <div class="absolute w-96 h-96 bg-red-200/20 rounded-full -bottom-48 -left-48"></div>
     
     <div class="container mx-auto px-4 py-8 relative z-10">
         <!-- Progress Bar -->
@@ -57,39 +209,39 @@
         <div class="stats shadow-lg bg-white/30 backdrop-blur-sm border-2 border-white/50 rounded-2xl mb-8 mx-auto max-w-md md:max-w-full flex flex-col md:flex-row justify-center">
             <div class="stat">
                 <div class="stat-title text-green-600 font-semibold">Correct</div>
-                <div class="stat-value">0</div>
+                <div class="stat-value text-black">0</div>
             </div>
             <div class="stat">
                 <div class="stat-title text-red-600 font-semibold">Incorrect</div>
-                <div class="stat-value">0</div>
+                <div class="stat-value text-black">0</div>
             </div>
         </div>
 
         <!-- Main Input Area -->
         <div class="bg-white/30 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-white/50">
-            <div class="flex items-center gap-4 mb-6">
+            <div class="flex items-center gap-2 sm:gap-4 mb-6">
                 <!-- Sound Button -->
-                <button class="clay-button bg-green-400/80 w-16 h-16 flex items-center justify-center rounded-2xl hover:scale-110">
-                    <i class="fa fa-volume-up text-2xl text-green-900"></i>
+                <button class="clay-button bg-green-400/80 w-12 sm:w-16 h-12 sm:h-16 flex items-center justify-center rounded-2xl hover:scale-110">
+                    <i class="fa fa-volume-up text-xl sm:text-2xl text-green-900"></i>
                 </button>
 
                 <!-- Input Field -->
                 <input type="text" id="spellingInput"
-                    class="input input-lg input-bordered w-full text-2xl font-semibold placeholder-opacity-50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    class="input input-lg input-bordered w-full text-2xl font-semibold bg-white dark:bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                     placeholder="Type the word here...">
 
                 <!-- Accent Button -->
-                <button class="clay-button bg-red-200/80 w-16 h-16 flex items-center justify-center rounded-2xl" id="accentBtn">
-                    <i class="fa fa-language text-2xl text-red-800"></i>
+                <button class="clay-button bg-red-600 w-12 sm:w-16 h-12 sm:h-16 flex items-center justify-center rounded-2xl" id="accentBtn">
+                    <i class="fa fa-language text-xl sm:text-2xl text-white"></i>
                 </button>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex justify-center gap-6 mt-8">
-                <button class="clay-button bg-green-400/80 px-8 py-4 text-xl font-bold text-green-900 rounded-full hover:bg-green-500/90">
+<div class="flex justify-center gap-6 mt-8">
+                <button class="clay-button px-8 py-4 text-xl font-bold text-white rounded-full hover:bg-green-500/90 clay-button" style="background-color: mediumseagreen; opacity: 1;">
                     <i class="fa fa-check-circle mr-2"></i>Check
                 </button>
-                <button class="clay-button bg-red-600/90 px-8 py-4 text-xl font-bold text-white rounded-full hover:bg-red-700">
+                <button class="clay-button bg-red-600/90 px-8 py-4 text-xl font-bold text-white rounded-full hover:bg-red-700 clay-button">
                     <i class="fa fa-forward mr-2"></i>Skip
                 </button>
             </div>
@@ -101,21 +253,41 @@
             <div class="space-y-6">
                 <div class="form-control">
                     <label class="label justify-start gap-4">
-                        <span class="label-text font-semibold text-base">Success Sound:</span>
+<span class="label-text font-semibold text-base" style="font-size: 1.25rem;">Success Sound:</span>
                         <input type="checkbox" class="toggle toggle-success">
                     </label>
                     <input type="range" min="0" max="100" value="80" class="range range-xs range-success mt-2">
                 </div>
                 <div class="form-control">
                     <label class="label justify-start gap-4">
-                        <span class="label-text font-semibold text-base">Incorrect Sound:</span>
+<span class="label-text font-semibold text-base" style="font-size: 1.25rem;">Incorrect Sound:</span>
                         <input type="checkbox" class="toggle toggle-error">
                     </label>
                     <input type="range" min="0" max="100" value="80" class="range range-xs range-error mt-2">
                 </div>
+                <div class="form-control">
+                    <label class="label justify-start gap-4">
+                        <span class="label-text font-semibold text-base" style="font-size: 1.25rem;">Dark Mode:</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="" class="sr-only peer" id="darkModeToggle">
+                            <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-0 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-gray-300">
+                                <i class="fa fa-sun-o text-orange-500 absolute left-1.5 top-[0.75px] text-base"></i>
+                                <i class="fa fa-moon-o text-white absolute right-1.5 top-[0.75px] text-base"></i>
+                            </div>
+                        </label>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
+
+    <style>
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+        }
+    </style>
 
     <!-- Accent Popup -->
     <div class="modal" id="accentModal">
@@ -152,9 +324,13 @@ $(document).ready(function() {
 
     // Dark mode toggle
     $('#darkModeToggle').on('change', function() {
-        $('body').toggleClass('bg-gray-900 text-white');
-        $('.modal-box').toggleClass('bg-gray-800 text-white');
+        $('body').toggleClass('dark-mode');
     });
+
+    // Initial dark mode check
+    if ($('body').hasClass('dark-mode')) {
+        $('#darkModeToggle').prop('checked', true);
+    }
 
     // Progress animation
     let progress = 1;

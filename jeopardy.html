@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UISpell - Jeopardy Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            margin: 0;
+            padding: 0;
+            background: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        body.dark-mode {
+            background: #1a202c;
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Theme toggle styles */
+        .theme-toggle {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle i {
+            font-size: 20px;
+            color: #fb8500;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle.checked {
+            background: #4a5568;
+        }
+
+        .theme-toggle.checked i {
+            color: #ffffff;
+        }
+
+        .animations-enabled .theme-toggle i {
+            animation: sunRotate 3s infinite;
+        }
+
+        @keyframes sunRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(15deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1); }
+            75% { transform: rotate(-15deg) scale(0.9); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        /* Jeopardy board styles */
+        .jeopardy-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin: 1rem;
+            height: calc(100vh - 2rem);
+            padding-right: 0;
+            padding-top: 1rem;
+        }
+
+        .jeopardy-category {
+            background: #023047;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .jeopardy-value {
+            background: #023047;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border-radius: 12px;
+            box-shadow: inset 4px 4px 8px rgba(255, 255, 255, 0.15),
+                       inset -4px -4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jeopardy-value span {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(45deg, #ffb703, #fb8500, #ffb703);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
+            animation: gradientFlow 2s ease infinite;
+        }
+
+        .jeopardy-value:hover {
+            transform: translateY(-2px);
+            box-shadow: inset 4px 4px 8px rgba(255, 255, 255, 0.2),
+                       inset -4px -4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .jeopardy-value:active {
+            transform: translateY(0);
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.15),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .jeopardy-value.answered {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Team panel styles */
+        .team-panel {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            transition: right 0.3s ease;
+            z-index: 40;
+            overflow: hidden;
+        }
+
+        body.dark-mode .team-panel {
+            background: #1a202c;
+        }
+
+        .team-panel.expanded {
+            right: 0;
+        }
+
+        .team-panel-toggle {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 32px;
+            background: rgba(44, 82, 130, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+            z-index: 41;
+        }
+
+        .team-panel-toggle:hover {
+            background: rgba(44, 82, 130, 0.9);
+        }
+
+        .team-panel-toggle i {
+            color: rgba(255, 209, 102, 0.8);
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .team-panel.expanded .team-panel-toggle i {
+            transform: rotate(180deg);
+        }
+
+        .team-panel-content {
+            padding: 1.5rem;
+            width: 300px;
+            height: 100%;
+            overflow-y: auto;
+            color: #1a202c;
+        }
+
+        body.dark-mode .team-panel-content {
+            color: #ffffff;
+        }
+
+        .team-card {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .team-card h3 {
+            font-weight: bold;
+            color: #023047;
+            margin: 0;
+            flex: 1;
+        }
+
+        .team-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fb8500;
+        }
+
+        .score-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .score-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .score-btn.plus, .score-btn.minus {
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 4px;
+            line-height: 0;
+        }
+
+        .score-btn.plus {
+            background: #4CAF50;
+            color: white;
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-btn.minus {
+            background: #f44336;
+            color: white;
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-btn:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode .game-stats {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 3px 3px 6px rgba(255, 255, 255, 0.1),
+                       inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .game-stats h3 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .team-card {
+            background: #1a202c;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .team-card h3 {
+            color: #ffffff;
+        }
+
+        .add-team-btn {
+            background: #fb8500;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            width: 80%;
+            margin: 0 auto;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 3px 3px 6px rgba(255, 255, 255, 0.2),
+                       inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .add-team-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: inset 3px 3px 6px rgba(255, 255, 255, 0.25),
+                       inset -3px -3px 6px rgba(0, 0, 0, 0.25);
+        }
+
+        .add-team-btn:active {
+            transform: translateY(0);
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .add-team-btn {
+            background: #fb8500;
+            color: white;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3),
+                       -4px -4px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .add-team-btn:hover {
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4),
+                       -6px -6px 12px rgba(255, 255, 255, 0.2);
+            background: #fb8500;
+            opacity: 0.9;
+        }
+
+        body.dark-mode .add-team-btn:active {
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+                       -2px -2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .question-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            perspective: 2000px;
+        }
+
+        body.dark-mode .question-modal {
+            background: #1a202c;
+        }
+
+        .question-content {
+            background: #2a9d8f;
+            width: 80%;
+            height: 80%;
+            border-radius: 12px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 12px 0 20px rgba(255, 255, 255, 0.15),
+                       inset -12px 0 20px rgba(255, 255, 255, 0.15),
+                       inset 0 12px 20px rgba(255, 255, 255, 0.15),
+                       inset 0 -12px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .question-content .front, 
+        .question-content .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        .question-content .front {
+            transform: rotateY(0deg);
+        }
+
+        .question-content .back {
+            transform: rotateY(180deg);
+        }
+
+        .question-content.flipped {
+            transform: rotateY(180deg) scale(1.05);
+        }
+
+        .question-content .front span,
+        .question-content .back span {
+            font-size: 3.5rem;
+            font-weight: 800;
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(90deg, #ffffff 0%, #e9c46a 50%, #ffffff 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transform: translateZ(60px);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .animations-enabled .question-content .front span,
+        .animations-enabled .question-content .back span {
+            animation: textGradientFlow 3s linear infinite;
+        }
+
+        @keyframes textGradientFlow {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        body.dark-mode .question-content {
+            background: #2d3748;
+            color: #a0aec0;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .panel-header {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .game-stats {
+            background: rgba(2, 48, 71, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: inset 3px 3px 6px rgba(255, 255, 255, 0.8),
+                       inset -3px -3px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-stats h3 {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #023047;
+            position: relative;
+            display: inline-block;
+        }
+
+        .game-stats h3::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #fb8500, transparent);
+            transform-origin: left;
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .animations-enabled .game-stats h3::after {
+            opacity: 1;
+            animation: slideIn 2s infinite;
+        }
+
+        @keyframes slideIn {
+            0% { transform: scaleX(0); }
+            50% { transform: scaleX(1); }
+            100% { transform: scaleX(0); }
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item span:last-child {
+            font-weight: bold;
+            color: #fb8500;
+        }
+
+        body.dark-mode .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Effects Toggle Styles */
+        .effects-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            background: rgba(2, 48, 71, 0.05);
+        }
+
+        .effects-toggle i {
+            font-size: 1.4rem;
+            margin-bottom: -2px;
+            color: #64748b;
+            transform-origin: center;
+        }
+
+        .animations-enabled .effects-toggle i {
+            background: linear-gradient(45deg, #ffb703, #fb8500);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: starSpin 3s infinite;
+        }
+
+        @keyframes starSpin {
+            0% { 
+                transform: rotate(0deg) scale(1);
+                background-position: 0% 50%;
+            }
+            25% {
+                transform: rotate(180deg) scale(1.2);
+                background-position: 50% 100%;
+            }
+            50% {
+                transform: rotate(360deg) scale(1);
+                background-position: 100% 50%;
+            }
+            75% {
+                transform: rotate(540deg) scale(0.8);
+                background-position: 50% 0%;
+            }
+            100% { 
+                transform: rotate(720deg) scale(1);
+                background-position: 0% 50%;
+            }
+        }
+
+        .effects-toggle.disabled i {
+            color: #64748b;
+            background: none;
+            -webkit-background-clip: initial;
+            background-clip: initial;
+            animation: none;
+        }
+
+        .effects-toggle span {
+            font-weight: 500;
+        }
+
+        /* Stats Toggle */
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .stats-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .stats-header.collapsed i {
+            transform: rotate(-90deg);
+        }
+
+        .stats-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .stats-content.expanded {
+            max-height: 200px;
+        }
+
+        /* Custom Modal Styles */
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-modal.show {
+            opacity: 1;
+        }
+
+        .custom-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: inset 3px 3px 6px rgba(255, 255, 255, 0.2),
+                       inset -3px -3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-modal.show .custom-modal-content {
+            transform: translateY(0);
+        }
+
+        .custom-modal p {
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .custom-modal input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            border: 2px solid #023047;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            background: white;
+            color: #023047;
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                       inset -2px -2px 4px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .custom-modal input:focus {
+            outline: none;
+            border-color: #2a9d8f;
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.1),
+                       inset -3px -3px 6px rgba(255, 255, 255, 0.5);
+        }
+
+        .custom-modal-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            border: none;
+            color: white;
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                       inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-modal-button[data-action="cancel"] {
+            background: #e76f51;
+        }
+
+        .custom-modal-button[data-action="confirm"],
+        .custom-modal-button.alert-ok {
+            background: #2a9d8f;
+        }
+
+        .custom-modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Animations that can be toggled */
+        .animations-enabled .jeopardy-value span {
+            animation: gradientFlow 2s ease infinite;
+        }
+
+        .animations-enabled .score-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .animations-enabled .question-content {
+            transition: transform 0.6s;
+        }
+
+        .animations-disabled .jeopardy-value span {
+            animation: none;
+            background: #ffb703;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .animations-disabled .score-btn:hover {
+            transform: none;
+        }
+
+        .animations-disabled .question-content {
+            transition: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen overflow-y-auto">
+    <!-- Main Content -->
+    <div class="container mx-auto px-4">
+        <!-- Jeopardy Board -->
+        <div class="jeopardy-board">
+            <!-- Categories and values will be dynamically populated -->
+        </div>
+    </div>
+
+    <!-- Team Panel -->
+    <div class="team-panel" id="teamPanel">
+        <div class="team-panel-toggle" id="teamPanelToggle">
+            <i class="fa fa-chevron-left"></i>
+        </div>
+        <div class="team-panel-content">
+            <div class="panel-header">
+                <a href="/" class="text-2xl font-bold">UISpell</a>
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fa fa-sun-o"></i>
+                </div>
+            </div>
+            <div class="effects-toggle" id="animationToggle">
+                <i class="fa fa-star"></i>
+                <span>Toggle Effects</span>
+            </div>
+            <h2 class="text-xl font-bold mb-4">Teams</h2>
+            <div class="teams-container">
+                <!-- Teams will be dynamically added here -->
+            </div>
+            <button id="addTeamBtn" class="add-team-btn">
+                Add Team
+            </button>
+            <div class="game-stats">
+                <div class="stats-header" id="statsToggle">
+                    <h3>Game Statistics</h3>
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+                <div class="stats-content">
+                    <div class="stat-item">
+                        <span>Questions Remaining:</span>
+                        <span id="questionsRemaining">25</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Points Available:</span>
+                        <span id="pointsAvailable">$7,500</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Teams:</span>
+                        <span id="teamCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Update game statistics
+        function updateGameStats() {
+            const totalQuestions = 25;
+            const answeredQuestions = $('.jeopardy-value.answered').length;
+            const remainingQuestions = totalQuestions - answeredQuestions;
+            
+            let availablePoints = 0;
+            $('.jeopardy-value').each(function() {
+                if (!$(this).hasClass('answered')) {
+                    availablePoints += parseInt($(this).data('value'));
+                }
+            });
+
+            $('#questionsRemaining').text(remainingQuestions);
+            $('#pointsAvailable').text('$' + availablePoints.toLocaleString());
+            $('#teamCount').text(teams.length);
+        }
+
+        // Initialize animations state
+        $(document).ready(function() {
+            const animationsEnabled = localStorage.getItem('animationsEnabled') !== 'false';
+            $('#animationToggle').toggleClass('disabled', !animationsEnabled);
+            $('body').toggleClass('animations-enabled', animationsEnabled);
+            $('body').toggleClass('animations-disabled', !animationsEnabled);
+            updateGameStats();
+        });
+
+        // Animation toggle functionality
+        $('#animationToggle').on('click', function() {
+            const isEnabled = !$(this).hasClass('disabled');
+            $(this).toggleClass('disabled');
+            $('body').toggleClass('animations-enabled', !isEnabled);
+            $('body').toggleClass('animations-disabled', isEnabled);
+            localStorage.setItem('animationsEnabled', !isEnabled);
+        });
+
+        // Dark mode toggle functionality
+        const themeToggle = $('#themeToggle');
+        const body = $('body');
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        if (isDarkMode) {
+            body.addClass('dark-mode');
+            themeToggle.addClass('checked');
+            themeToggle.html('<i class="fa fa-moon-o"></i>');
+        }
+
+        themeToggle.on('click', () => {
+            body.toggleClass('dark-mode');
+            themeToggle.toggleClass('checked');
+            
+            if (body.hasClass('dark-mode')) {
+                themeToggle.html('<i class="fa fa-moon-o"></i>');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                themeToggle.html('<i class="fa fa-sun-o"></i>');
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+
+        // Team panel toggle
+        const teamPanel = $('#teamPanel');
+        const teamPanelToggle = $('#teamPanelToggle');
+
+        teamPanelToggle.on('click', () => {
+            teamPanel.toggleClass('expanded');
+        });
+
+        // Word database
+        const wordDatabase = {
+            "accommodate": "To provide lodging or sufficient space for",
+            "embarrass": "To cause someone to feel self-conscious or ashamed",
+            "occurrence": "An event or incident",
+            "separate": "To divide or keep apart",
+            "definitely": "Without doubt or question",
+            "privilege": "A special right or advantage",
+            "conscience": "An inner feeling of right and wrong",
+            "recommend": "To suggest as worthy of confidence or use",
+            "maintenance": "The process of maintaining or preserving something",
+            "perseverance": "Steady persistence in a course of action",
+            "mischievous": "Causing or showing a fondness for causing trouble",
+            "pronunciation": "The way in which a word is pronounced",
+            "questionnaire": "A list of questions for gathering information",
+            "rhythm": "A strong, regular, repeated pattern of movement or sound",
+            "schedule": "A plan for carrying out a process or procedure",
+            "temperature": "The degree of heat present in a substance",
+            "unnecessary": "Not needed or required",
+            "vacuum": "A space entirely devoid of matter",
+            "weird": "Suggesting something supernatural or uncanny",
+            "xylophone": "A musical instrument with wooden bars"
+        };
+
+        // Game state
+        let teams = [];
+        let currentQuestion = null;
+        let selectedCell = null;
+
+        // Jeopardy board initialization
+        const categories = [
+            'Definitions 1',
+            'Definitions 2',
+            'Etymology 1',
+            'Etymology 2',
+            'Synonyms/Antonyms'
+        ];
+
+        const values = [100, 200, 300, 400, 500];
+        const board = $('.jeopardy-board');
+
+        // Create category headers
+        categories.forEach(category => {
+            board.append($('<div>')
+                .addClass('jeopardy-category')
+                .text(category));
+        });
+
+        // Function to get synonyms/antonyms questions ordered by count
+        async function getSynAntQuestions() {
+            try {
+                const response = await fetch('data/24-25/vocabulary/synonymsAntonyms.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load synonyms/antonyms data');
+                }
+                const synAntData = await response.json();
+                
+                const questions = [];
+                const usedWords = new Set();
+
+                // First, gather all possible questions
+                for (const [word, data] of Object.entries(synAntData)) {
+                    if (!usedWords.has(word)) {
+                        if (data.synonyms && Array.isArray(data.synonyms) && data.synonyms.length > 0) {
+                            questions.push({
+                                word,
+                                type: 'synonyms',
+                                count: data.synonyms.length,
+                                answers: data.synonyms,
+                                question: `What are the synonyms for the word "${word}"?`
+                            });
+                        }
+                        if (data.antonyms && Array.isArray(data.antonyms) && data.antonyms.length > 0) {
+                            questions.push({
+                                word,
+                                type: 'antonyms',
+                                count: data.antonyms.length,
+                                answers: data.antonyms,
+                                question: `What are the antonyms for the word "${word}"?`
+                            });
+                        }
+                    }
+                }
+
+                // Group questions by count for better distribution
+                const questionsByCount = {};
+                questions.forEach(q => {
+                    if (!questionsByCount[q.count]) {
+                        questionsByCount[q.count] = [];
+                    }
+                    questionsByCount[q.count].push(q);
+                });
+
+                // Get sorted counts
+                const counts = Object.keys(questionsByCount)
+                    .map(Number)
+                    .sort((a, b) => a - b);
+
+                // Select questions ensuring no word is repeated
+                const selectedQuestions = [];
+                const countRanges = [
+                    counts.slice(0, Math.ceil(counts.length * 0.2)),  // Bottom 20% for $100
+                    counts.slice(Math.ceil(counts.length * 0.2), Math.ceil(counts.length * 0.4)),  // 20-40% for $200
+                    counts.slice(Math.ceil(counts.length * 0.4), Math.ceil(counts.length * 0.6)),  // 40-60% for $300
+                    counts.slice(Math.ceil(counts.length * 0.6), Math.ceil(counts.length * 0.8)),  // 60-80% for $400
+                    counts.slice(Math.ceil(counts.length * 0.8))  // Top 20% for $500
+                ];
+
+                // Select one question from each range
+                countRanges.forEach(range => {
+                    const availableQuestions = range.flatMap(count => questionsByCount[count])
+                        .filter(q => !usedWords.has(q.word));
+                    
+                    if (availableQuestions.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+                        const selectedQuestion = availableQuestions[randomIndex];
+                        selectedQuestions.push(selectedQuestion);
+                        usedWords.add(selectedQuestion.word);
+                    }
+                });
+
+                // If we don't have enough questions, fill in from remaining questions
+                if (selectedQuestions.length < 5) {
+                    const remainingQuestions = questions.filter(q => !usedWords.has(q.word));
+                    while (selectedQuestions.length < 5 && remainingQuestions.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+                        const selectedQuestion = remainingQuestions[randomIndex];
+                        selectedQuestions.push(selectedQuestion);
+                        usedWords.add(selectedQuestion.word);
+                        remainingQuestions.splice(randomIndex, 1);
+                    }
+                }
+
+                // Sort final selection by count
+                return selectedQuestions.sort((a, b) => a.count - b.count);
+            } catch (error) {
+                console.error('Error loading synonyms/antonyms data:', error);
+                return [];
+            }
+        }
+
+        // Initialize board
+        async function initializeBoard() {
+            // Create value cells
+            const words = Object.keys(wordDatabase);
+            const selectedWords = [];
+            while (selectedWords.length < 20) { // Only 20 for first 4 columns
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                if (!selectedWords.includes(randomWord)) {
+                    selectedWords.push(randomWord);
+                }
+            }
+
+            // Get ordered synonyms/antonyms questions
+            const synAntQuestions = await getSynAntQuestions();
+
+            let wordIndex = 0;
+            values.forEach((value, rowIndex) => {
+                categories.forEach((category, colIndex) => {
+                    let valueElement;
+                    if (colIndex === 4) { // Synonyms/Antonyms column
+                        const question = synAntQuestions[rowIndex];
+                        if (question) {
+                            valueElement = $('<div>')
+                                .addClass('jeopardy-value')
+                                .append($('<span>').text(`$${value}`))
+                                .data('value', value)
+                                .data('word', question.word)
+                                .data('type', question.type)
+                                .data('question', question.question)
+                                .data('answers', question.answers) // Store the full array
+                                .on('click', handleCellClick);
+                        } else {
+                            // Fallback to a definition if we couldn't load syn/ant data
+                            const randomWord = words[Math.floor(Math.random() * words.length)];
+                            valueElement = $('<div>')
+                                .addClass('jeopardy-value')
+                                .append($('<span>').text(`$${value}`))
+                                .data('value', value)
+                                .data('word', randomWord)
+                                .data('definition', wordDatabase[randomWord])
+                                .on('click', handleCellClick);
+                        }
+                    } else {
+                        valueElement = $('<div>')
+                            .addClass('jeopardy-value')
+                            .append($('<span>').text(`$${value}`))
+                            .data('value', value)
+                            .data('word', selectedWords[wordIndex])
+                            .data('definition', wordDatabase[selectedWords[wordIndex]])
+                            .on('click', handleCellClick);
+                        wordIndex++;
+                    }
+                    board.append(valueElement);
+                });
+            });
+        }
+
+        // Initialize the board when the document is ready
+        $(document).ready(() => {
+            initializeBoard();
+            updateGameStats();
+        });
+
+        // Team management
+        const addTeamBtn = $('#addTeamBtn');
+        const teamsContainer = $('.teams-container');
+
+        // Custom alert function
+        function showAlert(message) {
+            const modal = $('<div>').addClass('custom-modal').html(`
+                <div class="custom-modal-content">
+                    <p>${message}</p>
+                    <div class="custom-modal-buttons">
+                        <button class="custom-modal-button alert-ok">OK</button>
+                    </div>
+                </div>
+            `);
+
+            $('body').append(modal);
+            setTimeout(() => modal.addClass('show'), 10);
+
+            modal.find('.custom-modal-button').on('click', () => {
+                modal.removeClass('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+        }
+
+        // Custom prompt function
+        function showPrompt(message, callback) {
+            const modal = $('<div>').addClass('custom-modal').html(`
+                <div class="custom-modal-content">
+                    <p>${message}</p>
+                    <input type="text" placeholder="Enter team name" autocomplete="off">
+                    <div class="custom-modal-buttons">
+                        <button class="custom-modal-button" data-action="cancel">Cancel</button>
+                        <button class="custom-modal-button" data-action="confirm">OK</button>
+                    </div>
+                </div>
+            `);
+
+            const input = modal.find('input');
+            
+            $('body').append(modal);
+            setTimeout(() => {
+                modal.addClass('show');
+                input.focus();
+            }, 10);
+
+            function closeModal() {
+                modal.removeClass('show');
+                setTimeout(() => modal.remove(), 300);
+            }
+
+            modal.find('[data-action="cancel"]').on('click', closeModal);
+            modal.find('[data-action="confirm"]').on('click', () => {
+                const value = input.val().trim();
+                if (value) {
+                    callback(value);
+                    closeModal();
+                }
+            });
+        }
+
+        // Update team management
+        addTeamBtn.on('click', () => {
+            showPrompt('Enter team name:', (teamName) => {
+                teams.push({ name: teamName, score: 0 });
+                updateTeamsDisplay();
+            });
+        });
+
+        function updateTeamsDisplay() {
+            teamsContainer.empty();
+            teams.forEach((team, index) => {
+                const teamCard = $('<div>')
+                    .addClass('team-card')
+                    .html(`
+                        <h3>${team.name}</h3>
+                        <div class="team-score">$${team.score.toLocaleString()}</div>
+                        <div class="score-controls">
+                            <div class="score-btn minus" data-team-index="${index}">-</div>
+                            <div class="score-btn plus" data-team-index="${index}">+</div>
+                        </div>
+                    `);
+                
+                teamCard.find('.score-btn.plus').on('click', function(e) {
+                    e.stopPropagation();
+                    const teamIndex = $(this).data('team-index');
+                    teams[teamIndex].score += selectedCell ? parseInt(selectedCell.data('value')) : 100;
+                    updateTeamsDisplay();
+                });
+
+                teamCard.find('.score-btn.minus').on('click', function(e) {
+                    e.stopPropagation();
+                    const teamIndex = $(this).data('team-index');
+                    teams[teamIndex].score -= selectedCell ? parseInt(selectedCell.data('value')) : 100;
+                    updateTeamsDisplay();
+                });
+
+                teamsContainer.append(teamCard);
+            });
+            updateGameStats();
+        }
+
+        // Update question handling
+        function handleCellClick(event) {
+            if (teams.length === 0) {
+                showAlert('Please add at least one team first!');
+                return;
+            }
+
+            const cell = $(event.currentTarget);
+            if (cell.hasClass('answered')) return;
+
+            selectedCell = cell;
+            currentQuestion = {
+                word: cell.data('word'),
+                type: cell.data('type'),
+                definition: cell.data('definition'),
+                question: cell.data('question'),
+                answers: cell.data('answers'),
+                value: parseInt(cell.data('value'))
+            };
+
+            // Format answer based on question type
+            const displayQuestion = currentQuestion.type ? currentQuestion.question : currentQuestion.definition;
+            let displayAnswer;
+            
+            if (currentQuestion.type) {
+                // Format answers in Jeopardy style
+                const answers = Array.isArray(currentQuestion.answers) ? currentQuestion.answers : [currentQuestion.answers];
+                displayAnswer = `What ${answers.length > 1 ? 'are' : 'is'} ${answers.join(', ')}?`;
+            } else {
+                displayAnswer = formatJeopardyAnswer(currentQuestion.word);
+            }
+
+            const modal = $('<div>')
+                .addClass('question-modal')
+                .append($('<div>')
+                    .addClass('question-content')
+                    .html(`
+                        <div class="front"><span>${displayQuestion}</span></div>
+                        <div class="back"><span>${displayAnswer}</span></div>
+                    `)
+                    .on('click', function() {
+                        const content = $(this);
+                        if (content.hasClass('flipped')) {
+                            setTimeout(() => {
+                                modal.remove();
+                                cell.addClass('answered');
+                                updateGameStats();
+                            }, 800);
+                        } else {
+                            content.addClass('flipped');
+                        }
+                    }));
+            
+            $('body').append(modal);
+        }
+
+        // Format answer in Jeopardy style
+        function formatJeopardyAnswer(word) {
+            // Remove trailing period if it exists
+            word = word.replace(/\.$/, '');
+            
+            // Check if the word starts with "a", "an", or "the"
+            const startsWithArticle = /^(a|an|the)\s+/i.test(word);
+            
+            // If it starts with an article, move it to the end
+            if (startsWithArticle) {
+                word = word.replace(/^(a|an|the)\s+(.*)$/i, '$2, $1');
+            }
+            
+            return `What is ${word}?`;
+        }
+
+        // Stats toggle
+        $('#statsToggle').on('click', function() {
+            $(this).toggleClass('collapsed');
+            $('.stats-content').toggleClass('expanded');
+        });
+    </script>
+</body>
+</html> 

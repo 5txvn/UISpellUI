@@ -3,111 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UISpell - Learning Resources</title>
+    <title>Resources - UISpell</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        .neumorphic-card {
-            background: white;
-            box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.05),
-                       inset 3px 3px 5px rgba(255, 255, 255, 0.8),
-                       4px 4px 8px rgba(0, 0, 0, 0.05);
-            backdrop-filter: blur(12px);
+        .clay-surface {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+                       -8px -8px 16px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            transition: background-color 2s ease;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Smooth dark mode transition */
+        body {
+            transition: background-color 2s ease, color 2s ease;
+        }
+
+        body.dark-mode {
+            background: #1a202c;
+            color: #ffffff;
+        }
+
+        body.dark-mode .text-gray-700 {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .text-gray-800 {
+            color: #ffffff;
+        }
+
+        body.dark-mode nav {
+            background: rgba(26, 32, 44, 0.95);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .clay-surface {
+            background: rgba(26, 32, 44, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
+                       -8px -8px 16px rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle i {
+            font-size: 20px;
+            color: #ffd166;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle.checked {
+            background: #4a5568;
+        }
+
+        .theme-toggle.checked i {
+            color: #ffffff;
+        }
+
+        .gradient-title {
+            background: linear-gradient(to right, #06d6a0, #ef476f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+            padding-bottom: 0.5em;
+            display: inline-block;
+        }
+
+        body.dark-mode .gradient-title {
+            background: linear-gradient(to right, #ffffff, #a0aec0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+            padding-bottom: 0.5em;
+            display: inline-block;
+        }
+
+        .hero-circle {
+            background: linear-gradient(45deg, #06d6a0, #ef476f);
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        body.dark-mode .hero-circle {
+            background: linear-gradient(45deg, #ffffff, #a0aec0);
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        .hero-icon {
+            color: #06d6a0;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .hero-icon {
+            color: #ffffff;
+        }
+
+        .hero-text {
+            color: #4a5568;
+        }
+
+        body.dark-mode .hero-text {
+            color: #e2e8f0;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen overflow-hidden">
+<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen overflow-y-auto">
     <!-- Navigation -->
-    <nav class="bg-white/30 backdrop-blur-sm border-b-2 border-black/50 border-white/50">
+    <nav class="bg-gray-100/95 backdrop-blur-md border-b border-gray-200 shadow-sm rounded-b-2xl sticky top-0 z-50">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center gap-2">
-                    <span class="text-xl font-bold text-black">UISpell</span>
+                    <a href="landing.html" class="text-xl font-bold text-gray-800 hover:text-gray-600 transition-colors">UISpell</a>
                 </div>
-                <a href="index.html" class="neumorphic-card px-6 py-2 rounded-full hover:scale-105 transition-transform">
-                    Practice Now <i class="fa fa-arrow-right ml-2"></i>
-                </a>
+                <div class="flex items-center gap-4">
+                    <div class="theme-toggle" id="themeToggle">
+                        <i class="fa fa-sun-o"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-12">
-        <div class="mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-12 text-center text-black">
+    <div class="container mx-auto px-8 md:px-16 lg:px-24 py-12">
+        <!-- Hero Section (Hidden on Mobile) -->
+        <div class="mb-16 hidden md:block">
+            <div class="clay-surface rounded-2xl p-8 md:p-12 pb-16 md:pb-20 relative overflow-hidden">
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 left-0 w-32 h-32 hero-circle rounded-full -translate-x-16 -translate-y-16"></div>
+                <div class="absolute bottom-0 right-0 w-48 h-48 hero-circle rounded-full translate-x-16 translate-y-16"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="text-center md:text-left">
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 gradient-title">
+                                Learning Resources
+                            </h1>
+                            <p class="text-lg hero-text max-w-2xl">
+                                Explore our comprehensive collection of resources designed to help you master spelling and vocabulary.
+                            </p>
+                        </div>
+                        <div class="hidden md:flex items-center justify-center">
+                            <div class="w-24 h-24 md:w-32 md:h-32 bg-white/50 rounded-full flex items-center justify-center">
+                                <i class="fa fa-book text-4xl md:text-5xl hero-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Title (shown only on mobile) -->
+        <div class="md:hidden text-center mb-8">
+            <h1 class="text-4xl font-bold gradient-title">
                 Learning Resources
             </h1>
-            
+        </div>
+
+        <div class="mb-12">
             <!-- Vocabulary Section -->
             <div class="mb-16">
-                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-green-600">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-[#06d6a0]">
                     <i class="fa fa-book"></i> Vocabulary Builders
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="neumorphic-card p-6 rounded-2xl">
-                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-green-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#06d6a0]">
                             <i class="fa fa-line-chart"></i> SAT Power Words
                         </h3>
-                        <p class="text-gray-600">500+ essential vocabulary words with definitions</p>
-                        <a href="#sat-words" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                        <p class="text-gray-700">500+ essential vocabulary words with definitions and example sentences.</p>
+                        <a href="#sat-words" class="mt-4 inline-block text-[#06d6a0] hover:text-[#05c090]">
                             View Knowt <i class="fa fa-external-link ml-2"></i>
                         </a>
                     </div>
-                    <!-- Repeat similar card structure for other sections -->
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#06d6a0]">
+                            <i class="fa fa-graduation-cap"></i> Academic Vocabulary
+                        </h3>
+                        <p class="text-gray-700">Common academic terms and their usage in different subjects.</p>
+                        <a href="#academic" class="mt-4 inline-block text-[#06d6a0] hover:text-[#05c090]">
+                            Study Now <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#06d6a0]">
+                            <i class="fa fa-language"></i> Word Roots
+                        </h3>
+                        <p class="text-gray-700">Learn Latin and Greek roots to understand word origins and meanings.</p>
+                        <a href="#roots" class="mt-4 inline-block text-[#06d6a0] hover:text-[#05c090]">
+                            Explore <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Competition Lists -->
             <div class="mb-16">
-                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-red-600">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-[#ef476f]">
                     <i class="fa fa-pencil"></i> Competition Lists
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="neumorphic-card p-6 rounded-2xl">
-                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-red-600">
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#ef476f]">
                             <i class="fa fa-trophy"></i> UIL Master List
                         </h3>
-                        <p class="text-gray-600">2024 competition words with audio guides</p>
-                        <a href="#uil-list" class="mt-4 inline-block text-red-600 hover:text-red-700">
+                        <p class="text-gray-700">2024 competition words with audio guides and pronunciation tips.</p>
+                        <a href="#uil-list" class="mt-4 inline-block text-[#ef476f] hover:text-[#d63d65]">
                             Study Now <i class="fa fa-external-link ml-2"></i>
                         </a>
                     </div>
-                    <!-- Repeat similar card structure -->
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#ef476f]">
+                            <i class="fa fa-list-ol"></i> Scripps Words
+                        </h3>
+                        <p class="text-gray-700">Official Scripps National Spelling Bee word lists and resources.</p>
+                        <a href="#scripps" class="mt-4 inline-block text-[#ef476f] hover:text-[#d63d65]">
+                            View List <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#ef476f]">
+                            <i class="fa fa-star"></i> Championship Words
+                        </h3>
+                        <p class="text-gray-700">Words from past championship rounds with detailed explanations.</p>
+                        <a href="#championship" class="mt-4 inline-block text-[#ef476f] hover:text-[#d63d65]">
+                            Learn More <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Grammar Guides -->
             <div class="mb-16">
-                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-yellow-600">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 pl-4 text-[#ffd166]">
                     <i class="fa fa-language"></i> Grammar Essentials
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="neumorphic-card p-6 rounded-2xl">
-                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-yellow-600">
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#ffd166]">
                             <i class="fa fa-question-circle"></i> Common Errors
                         </h3>
-                        <p class="text-gray-600">Their/there/they're, affect/effect</p>
-                        <a href="#errors" class="mt-4 inline-block text-yellow-600 hover:text-yellow-700">
+                        <p class="text-gray-700">Their/there/they're, affect/effect, and other frequently confused words.</p>
+                        <a href="#errors" class="mt-4 inline-block text-[#ffd166] hover:text-[#e6bc5c]">
                             Learn Rules <i class="fa fa-external-link ml-2"></i>
                         </a>
                     </div>
-                    <!-- Repeat similar card structure -->
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#ffd166]">
+                            <i class="fa fa-puzzle-piece"></i> Word Patterns
+                        </h3>
+                        <p class="text-gray-700">Understanding prefixes, suffixes, and word formation rules.</p>
+                        <a href="#patterns" class="mt-4 inline-block text-[#ffd166] hover:text-[#e6bc5c]">
+                            Study Now <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
+                    <div class="clay-surface p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2 text-[#ffd166]">
+                            <i class="fa fa-bookmark"></i> Usage Rules
+                        </h3>
+                        <p class="text-gray-700">Proper usage of commonly misused words and phrases.</p>
+                        <a href="#usage" class="mt-4 inline-block text-[#ffd166] hover:text-[#e6bc5c]">
+                            View Guide <i class="fa fa-external-link ml-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="border-t-2 border-white/50 mt-16">
-        <div class="container mx-auto px-4 py-8 text-center">
-            <p class="text-gray-600 mb-4">Open source spelling education platform</p>
-            <div class="flex justify-center space-x-4">
-                <a href="#" class="text-gray-600 hover:text-black"><i class="fa fa-github"></i> GitHub</a>
-                <a href="#" class="text-gray-600 hover:text-black"><i class="fa fa-envelope"></i> Contact</a>
-                <a href="#" class="text-gray-600 hover:text-black"><i class="fa fa-handshake-o"></i> Contribute</a>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder" class="pl-4"></div>
+
+    <script>
+        // Load footer component
+        fetch('components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // Initialize theme based on localStorage or system preference
+        const darkMode = localStorage.getItem('darkMode');
+        if (darkMode === 'true' || (!darkMode && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-mode');
+            themeToggle.classList.add('checked');
+            themeToggle.querySelector('i').className = 'fa fa-moon-o';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            themeToggle.classList.toggle('checked');
+            themeToggle.querySelector('i').className = isDark ? 'fa fa-moon-o' : 'fa fa-sun-o';
+            localStorage.setItem('darkMode', isDark);
+        });
+
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', (e) => {
+            if (!localStorage.getItem('darkMode')) {
+                const isDark = e.matches;
+                document.body.classList.toggle('dark-mode', isDark);
+                themeToggle.classList.toggle('checked', isDark);
+                themeToggle.querySelector('i').className = isDark ? 'fa fa-moon-o' : 'fa fa-sun-o';
+            }
+        });
+    </script>
 </body>
 </html>

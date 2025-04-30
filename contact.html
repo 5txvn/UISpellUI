@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - UISpell</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .clay-surface {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1),
+                       -8px -8px 16px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes sizePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .pulse-button {
+            animation: sizePulse 2s ease-in-out infinite;
+        }
+
+        .pulse-button:hover {
+            animation: none;
+            transform: scale(1.05);
+        }
+
+        .gradient-text {
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            transition: background-color 1s ease;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Smooth dark mode transition */
+        body {
+            transition: background-color 2s ease, color 2s ease;
+        }
+
+        body.dark-mode {
+            background: #1a202c;
+            color: #fff;
+        }
+
+        body.dark-mode .clay-surface {
+            transition: background-color 2s ease, border-color 2s ease, box-shadow 2s ease;
+            background: rgba(26, 32, 44, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
+                       -8px -8px 16px rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark-mode .text-gray-700 {
+            transition: color 2s ease;
+            color: #ffffff;
+        }
+
+        body.dark-mode .text-gray-600 {
+            transition: color 2s ease;
+            color: #ffffff;
+        }
+
+        body.dark-mode .text-gray-800 {
+            transition: color 2s ease;
+            color: #ffffff;
+        }
+
+        body.dark-mode .bg-gray-100\/95 {
+            transition: background-color 2s ease;
+            background: rgba(26, 32, 44, 0.95);
+        }
+
+        body.dark-mode .border-gray-200 {
+            transition: border-color 2s ease;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Theme toggle styles */
+        .theme-toggle {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle i {
+            font-size: 20px;
+            color: #ffd166;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle.checked {
+            background: #4a5568;
+        }
+
+        .theme-toggle.checked i {
+            color: #ffffff;
+        }
+
+        /* Sticky navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .contact-card {
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.15), inset 0 0 12px rgba(255, 255, 255, 0.8);
+        }
+
+        body.dark-mode .contact-card {
+            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-red-50 min-h-screen overflow-y-auto">
+    <!-- Navigation -->
+    <nav class="bg-gray-100/95 backdrop-blur-md border-b border-gray-200 shadow-sm rounded-b-2xl">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl font-bold text-gray-800">UISpell</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="theme-toggle" id="themeToggle">
+                        <i class="fa fa-sun-o"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <div class="container mx-auto px-4 py-12 relative z-10">
+        <div class="rounded-3xl px-12 pb-16 pt-10 text-center max-w-5xl mx-auto contact-card">
+            <h1 class="text-6xl font-bold mb-8 bg-gradient-to-r from-[#06d6a0] to-[#ef476f] bg-clip-text text-transparent leading-normal pb-4 animate-gradient" style="background-size: 200% auto; animation: gradientFlow 3s ease infinite;">
+                Get in Touch
+            </h1>
+            <p class="text-xl text-gray-700 mb-12">
+                Have questions or suggestions? We'd love to hear from you!
+            </p>
+        </div>
+
+        <!-- Contact Cards -->
+        <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto mt-12">
+            <!-- Contact Information -->
+            <div class="clay-surface p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">Contact Information</h2>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/20 transition-colors">
+                        <div class="w-12 h-12 clay-surface rounded-xl flex items-center justify-center">
+                            <i class="fa fa-envelope text-2xl text-[#06d6a0]"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">Email</h3>
+                            <p class="text-gray-700">your.email@example.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/20 transition-colors">
+                        <div class="w-12 h-12 clay-surface rounded-xl flex items-center justify-center">
+                            <i class="fa fa-github text-2xl text-gray-800"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">GitHub</h3>
+                            <a href="https://github.com/yourusername" class="text-gray-700 hover:text-[#06d6a0] transition-colors">github.com/yourusername</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/20 transition-colors">
+                        <div class="w-12 h-12 clay-surface rounded-xl flex items-center justify-center">
+                            <i class="fa fa-linkedin text-2xl text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">LinkedIn</h3>
+                            <a href="https://linkedin.com/in/yourusername" class="text-gray-700 hover:text-[#06d6a0] transition-colors">linkedin.com/in/yourusername</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="clay-surface p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">Send a Message</h2>
+                <form class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-gray-800">Name</label>
+                        <input type="text" class="w-full px-4 py-3 rounded-xl bg-white/50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#06d6a0]" placeholder="Your name">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-gray-800">Email</label>
+                        <input type="email" class="w-full px-4 py-3 rounded-xl bg-white/50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#06d6a0]" placeholder="Your email">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-gray-800">Message</label>
+                        <textarea class="w-full px-4 py-3 rounded-xl bg-white/50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#06d6a0] h-32" placeholder="Your message"></textarea>
+                    </div>
+                    <button type="submit" class="w-full clay-surface px-8 py-4 text-xl font-bold rounded-xl transition-transform pulse-button" style="color: #1a202c;">
+                        <i class="fa fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = themeToggle.querySelector('.fa-sun-o');
+        const moonIcon = document.createElement('i');
+        moonIcon.className = 'fa fa-moon-o';
+        moonIcon.style.display = 'none';
+        themeToggle.appendChild(moonIcon);
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.classList.toggle('checked');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 

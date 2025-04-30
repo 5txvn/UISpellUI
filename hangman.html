@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UISpell - Hangman Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/roughjs@4.5.2/bundled/rough.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'architects': ['"Architects Daughter"', 'cursive'],
+                    },
+                    boxShadow: {
+                        'inner-custom': 'inset 0 3px 6px #d4c4a7, inset 3px 0 6px #d4c4a7',
+                        'inner-dark': 'inset 5px 5px 10px #1a202c, inset -5px -5px 10px #404b5c',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-[#f5e6d3] dark:bg-[#2d3748] font-architects overflow-hidden h-screen m-0 p-0">
+    <a href="/" class="absolute top-4 left-4 text-4xl font-bold text-[#023047] dark:text-[#f5e6d3] hover:text-[#fb8500] dark:hover:text-[#fb8500] z-50">UISpell</a>
+    
+    <button id="themeToggle" class="absolute top-4 right-4 w-[60px] h-[60px] rounded-full bg-[#f5e6d3] dark:bg-[#2d3748] shadow-inner-custom dark:shadow-inner-dark flex items-center justify-center z-50 transition-transform duration-300 hover:scale-110">
+        <i class="fa fa-sun-o text-3xl text-[#023047] dark:text-[#f5e6d3] transition-transform duration-300"></i>
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 h-screen max-w-[1800px] mx-auto">
+        <div class="bg-[#0f172a] border-4 border-[#023047] rounded relative overflow-hidden flex items-center justify-center">
+            <canvas id="hangmanCanvas" class="w-full h-full max-h-[60vh] z-10"></canvas>
+            <div id="starsContainer" class="absolute inset-0 z-0"></div>
+        </div>
+        
+        <div class="bg-[#fff5e6] dark:bg-[#1a202c] border-4 border-[#023047] dark:border-[#f5e6d3] rounded p-8 flex flex-col gap-8">
+            <div id="gameStatus" class="text-center text-3xl font-bold text-[#023047] dark:text-[#f5e6d3] uppercase">
+                Guess the word!
+            </div>
+            
+            <div id="wordDisplay" class="flex flex-wrap gap-4 justify-center mb-8"></div>
+            
+            <div id="keyboard" class="grid grid-cols-7 md:grid-cols-9 gap-2 p-4"></div>
+            
+            <button id="newGameBtn" class="bg-[#023047] text-white py-4 px-8 font-bold text-xl mx-auto uppercase transition-all duration-300 rounded-lg shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.2)] hover:shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95">
+                New Game
+            </button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const wordList = [["à la carte","a la carte"],["aardvark"],["Abadan"],["abate"],["abhorrence"],["able-bodied"],["abscissa"],["absorbefacient"],["acanthus","Acanthus"],["acciaccatura"],["acclimatization"],["accumbent"],["acerbity"],["achondroplasia"],["acolyte"],["actinomycosis"],["ad hominem"],["ad nauseam"],["adamant"],["addlepated"],["adenoma"],["admiralty","Admiralty"],["adulate"],["adumbration"],["adventuresome"],["adynamia"],["aerophobia"],["affianced"],["agglomerate"],["aggravation"],["agitato"],["agog"],["aileron"],["akinesia"],["albuterol"],["aldermancy"],["algebraic"],["aliment"],["alla breve"],["allude"],["altazimuth"],["altruistic"],["Alzheimer's disease"],["amarelle"],["Americanize"],["amoxicillin"],["amperage"],["amphisbaena"],["amulet"],["amygdaline"],["anacrusis"],["analogous"],["anaphylaxis"],["anathematize"],["andesite"],["Andorra"],["anemia","anaemia"],["anemometry"],["Anglophile"],["anguished"],["ankylosis","anchylosis"],["annular ligament"],["anopheles","Anopheles"],["Antarctica"],["antepenultimate"],["anthropometry"],["anticyclone"],["antimacassar"],["antinome"],["antiphony"],["antiphrasis"],["aortography"],["aperçu"],["aplomb"],["apolitical"],["appertain"],["appoggiatura"],["apprehensible"],["aquamarine"],["Aquarius"],["Aramaic"],["archaeopteryx","Archaeopteryx"],["archdiocese"],["arenaceous"],["argumentation"],["Aristophanes"],["arrogance"],["artifact","artefact"],["ascetic"],["asocial"],["aspidistra","Aspidistra"],["assimilable"],["astragal"],["atamasco lily"],["atomism"],["au courant"],["aubergine"],["Auckland"],["Augean"],["auricular"],["auspice"],["australopithecine"],["automatism"],["Averno"],["aversion"],["avionics"],["avoirdupois"]];
+            
+            let currentWord = '';
+            let guessedLetters = new Set();
+            let wrongGuesses = 0;
+            const maxWrongGuesses = 6;
+            
+            const canvas = $('#hangmanCanvas')[0];
+            const ctx = canvas.getContext('2d');
+            const rc = rough.canvas(canvas);
+
+            function resizeCanvas() {
+                const container = canvas.parentElement;
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                drawHangman();
+            }
+
+            function drawHangman() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw pole (gray) - moved to left third and bottom aligned
+                if (wrongGuesses >= 1) {
+                    rc.line(canvas.width * 0.33, canvas.height, canvas.width * 0.33, canvas.height * 0.1, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#4b5563'
+                    });
+                }
+
+                if (wrongGuesses >= 2) {
+                    rc.line(canvas.width * 0.33, canvas.height * 0.1, canvas.width * 0.33 + 200, canvas.height * 0.1, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#4b5563'
+                    });
+                }
+
+                if (wrongGuesses >= 3) {
+                    rc.line(canvas.width * 0.33 + 200, canvas.height * 0.1, canvas.width * 0.33 + 200, canvas.height * 0.2, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#4b5563'
+                    });
+                }
+
+                if (wrongGuesses >= 4) {
+                    rc.circle(canvas.width * 0.33 + 200, canvas.height * 0.2 + 60, 100, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#ffffff'
+                    });
+                }
+
+                if (wrongGuesses >= 5) {
+                    // Body
+                    rc.line(canvas.width * 0.33 + 200, canvas.height * 0.2 + 110, canvas.width * 0.33 + 200, canvas.height * 0.2 + 350, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#ffffff'
+                    });
+                    // Arms
+                    rc.line(canvas.width * 0.33 + 200, canvas.height * 0.2 + 200, canvas.width * 0.33 + 50, canvas.height * 0.2 + 280, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#ffffff'
+                    });
+                    rc.line(canvas.width * 0.33 + 200, canvas.height * 0.2 + 200, canvas.width * 0.33 + 350, canvas.height * 0.2 + 280, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#ffffff'
+                    });
+                }
+
+                if (wrongGuesses >= 6) {
+                    // Legs
+                    rc.line(canvas.width * 0.33 + 200, canvas.height * 0.2 + 350, canvas.width * 0.33 + 50, canvas.height * 0.2 + 480, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#ffffff'
+                    });
+                    rc.line(canvas.width * 0.33 + 200, canvas.height * 0.2 + 350, canvas.width * 0.33 + 350, canvas.height * 0.2 + 480, {
+                        roughness: 3,
+                        strokeWidth: 8,
+                        stroke: '#ffffff'
+                    });
+                }
+            }
+
+            function createStars() {
+                const container = $('#starsContainer');
+                container.empty();
+                const numStars = 50;
+                
+                for (let i = 0; i < numStars; i++) {
+                    $('<div>')
+                        .addClass('star')
+                        .css({
+                            width: Math.random() * 3 + 'px',
+                            height: Math.random() * 3 + 'px',
+                            left: Math.random() * 100 + '%',
+                            top: Math.random() * 100 + '%',
+                            animationDelay: Math.random() * 2 + 's'
+                        })
+                        .appendTo(container);
+                }
+            }
+
+            function initializeKeyboard() {
+                const keyboard = $('#keyboard');
+                keyboard.empty();
+                
+                'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter => {
+                    $('<button>')
+                        .addClass('aspect-square bg-[#f5e6d3] dark:bg-[#2d3748] text-[#023047] dark:text-[#f5e6d3] font-bold text-2xl uppercase flex items-center justify-center rounded-lg shadow-inner-custom dark:shadow-inner-dark transition-all duration-200 hover:scale-105')
+                        .text(letter)
+                        .attr('data-letter', letter)
+                        .appendTo(keyboard);
+                });
+            }
+
+            function updateWordDisplay() {
+                const wordDisplay = $('#wordDisplay');
+                wordDisplay.empty();
+                
+                currentWord.split('').forEach(letter => {
+                    $('<div>')
+                        .addClass('w-10 h-10 border-b-4 border-[#023047] dark:border-[#f5e6d3] flex items-center justify-center text-3xl font-bold text-[#023047] dark:text-[#f5e6d3] uppercase')
+                        .text(letter === ' ' || letter === '-' || letter === "'" ? letter : 
+                              guessedLetters.has(letter.toUpperCase()) ? letter : '')
+                        .appendTo(wordDisplay);
+                });
+            }
+
+            function handleGuess(letter) {
+                if (guessedLetters.has(letter)) return;
+
+                const button = $(`button[data-letter="${letter}"]`);
+                if (button.length && !button.hasClass('used')) {
+                    button.addClass('used opacity-50 cursor-not-allowed transform-none');
+                    guessedLetters.add(letter);
+                    
+                    if (!currentWord.toUpperCase().includes(letter)) {
+                        wrongGuesses++;
+                        button.addClass('bg-[#ef4444] text-white');
+                        drawHangman();
+                        
+                        if (wrongGuesses >= maxWrongGuesses) {
+                            endGame(false);
+                        }
+                    } else {
+                        button.addClass('bg-[#84cc16]');
+                        if (hasWon()) {
+                            endGame(true);
+                        }
+                    }
+                    
+                    updateWordDisplay();
+                }
+            }
+
+            function hasWon() {
+                return currentWord.split('').every(letter => 
+                    letter === ' ' || letter === '-' || letter === "'" || 
+                    guessedLetters.has(letter.toUpperCase())
+                );
+            }
+
+            function endGame(won) {
+                $('#gameStatus').text(won ? 'You Won!' : `Game Over! Word: ${currentWord}`);
+                $('#keyboard button').prop('disabled', true);
+            }
+
+            function startNewGame() {
+                const randomWordGroup = wordList[Math.floor(Math.random() * wordList.length)];
+                currentWord = Array.isArray(randomWordGroup) ? randomWordGroup[0] : randomWordGroup;
+                
+                guessedLetters.clear();
+                wrongGuesses = 0;
+                
+                $('#gameStatus').text('Guess the word!');
+                
+                drawHangman();
+                initializeKeyboard();
+                updateWordDisplay();
+                createStars();
+            }
+
+            // Event Handlers
+            $(window).on('resize', resizeCanvas);
+            
+            $('#newGameBtn').on('click', startNewGame);
+            
+            $('#themeToggle').on('click', function() {
+                $('body').toggleClass('dark');
+                const isDark = $('body').hasClass('dark');
+                const icon = $(this).find('i');
+                
+                if (isDark) {
+                    icon.removeClass('fa-sun-o text-[#023047]')
+                        .addClass('fa-moon-o text-white');
+                } else {
+                    icon.removeClass('fa-moon-o text-white')
+                        .addClass('fa-sun-o text-[#023047]');
+                }
+                
+                localStorage.setItem('darkMode', isDark);
+            });
+
+            $(document).on('keydown', function(event) {
+                const letter = event.key.toUpperCase();
+                if (/^[A-Z]$/.test(letter)) {
+                    handleGuess(letter);
+                }
+            });
+
+            $('#keyboard').on('click', 'button', function() {
+                handleGuess($(this).attr('data-letter'));
+            });
+
+            // Initialize
+            if (localStorage.getItem('darkMode') === 'true') {
+                $('body').addClass('dark');
+                $('#themeToggle i')
+                    .removeClass('fa-sun-o text-[#023047]')
+                    .addClass('fa-moon-o text-white');
+            }
+
+            resizeCanvas();
+            startNewGame();
+        });
+    </script>
+</body>
+</html> 
